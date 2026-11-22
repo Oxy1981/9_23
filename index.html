@@ -34,7 +34,7 @@ select{max-width:100%}
 <h1>Зв’язки між таблицями у dat.A</h1>
 <p class="sub">Зовнішні ключі (FOREIGN KEY), режим підстановки, ER-діаграма · 9 клас · кав’ярня «BubbleTea &amp; Burgers»</p>
 <label class="sub">Прізвище та ім’я: <input id="nm" style="font:inherit;padding:5px 8px;border:1px solid var(--bd);border-radius:8px;background:var(--card);color:var(--tx)"></label>
-<nav><button class="on" data-t="th">1. Теорія</button><button data-t="tr">2. Тренажер</button><button data-t="ts">3. Тест (8 балів)</button><button data-t="ev">4. Оцінка</button></nav>
+<nav><button class="on" data-t="th">1. Теорія</button><button data-t="tr">2. Тренажер (2 б)</button><button data-t="ts">3. Тест (6 б)</button><button data-t="ev">4. Оцінка</button></nav>
 
 <section id="th">
 <div class="card"><h2>А. Види зв’язків за множинністю</h2>
@@ -67,14 +67,15 @@ select{max-width:100%}
 </section>
 
 <section id="tr" class="hide">
-<div class="card"><h2>Вправа 1. Визнач вид зв’язку</h2><div id="t1"></div><p class="fb" id="t1s"></p></div>
-<div class="card"><h2>Вправа 2. Чи прийме база це значення FK?</h2>
+<p class="sub">Тренажер оцінюється в 2 бали: вправи 1 і 2 — по 0,6 б (0,1 б за кожну правильну відповідь), вправа 3 — 0,8 б. Рахується перша спроба.</p>
+<div class="card"><span class="pts">до 0,6 б</span><h2>Вправа 1. Визнач вид зв’язку</h2><div id="t1"></div><p class="fb" id="t1s"></p></div>
+<div class="card"><span class="pts">до 0,6 б</span><h2>Вправа 2. Чи прийме база це значення FK?</h2>
 <p><b>Правило цілісності:</b> у зовнішньому ключі можна записати лише те значення, яке <b>є</b> серед первинних ключів (ID) батьківської таблиці.</p>
 <p>Батьківська таблиця <b>Меню</b>:</p>
 <div class="sc"><table><tr><th>ID (PK)</th><th>Назва</th></tr><tr><td>1</td><td>Бабл-ті Таро</td></tr><tr><td>2</td><td>Чізбургер</td></tr><tr><td>3</td><td>Картопля фрі</td></tr><tr><td>4</td><td>Лате</td></tr></table></div>
 <p>Касир вносить замовлення в дочірню таблицю <b>Замовлення</b>, поле <b>МенюID</b> — це FK. Для кожного запису обери, чи база його <b>прийме</b>:</p>
 <div id="t2"></div><p class="fb" id="t2s"></p></div>
-<div class="card"><h2>Вправа 3. Налаштуй зовнішній ключ у конструкторі</h2>
+<div class="card"><span class="pts">до 0,8 б</span><h2>Вправа 3. Налаштуй зовнішній ключ у конструкторі</h2>
 <p>У таблиці «Замовлення» є поле <b>МенюID</b>. Налаштуй його так, щоб воно посилалося на таблицю «Меню», а касир під час введення обирав страву зі списку, а не вписував цифри.</p>
 <div class="sc"><table><tr><th>Поле</th><th>Тип</th><th>Зовнішній ключ</th><th>Таблиця</th><th>Поле</th><th>Підстановка</th></tr>
 <tr><td>МенюID</td>
@@ -94,11 +95,11 @@ select{max-width:100%}
 </section>
 
 <section id="ev" class="hide">
-<div class="card"><h2>Мої результати за тест</h2>
+<div class="card"><h2>Мої результати</h2>
 <p class="sub" id="evn">Спочатку виконай тест і натисни «Перевірити тест» — тут з’являться твої бали.</p>
 <div class="sc"><table id="evt"></table></div>
 <p id="evr" style="font-size:1.1rem;font-weight:700"></p></div>
-<div class="card"><h2>Рівні досягнень за тест</h2>
+<div class="card"><h2>Рівні досягнень (за 8 балів)</h2>
 <div class="sc"><table><tr><th>Бали</th><th>Рівень</th><th>Що це означає</th></tr>
 <tr><td>до 2</td><td>Початковий</td><td>Знаю лише окремі терміни; потрібно повторити теорію й тренажер.</td></tr>
 <tr><td>понад 2 до 4</td><td>Середній</td><td>Розрізняю види зв’язків, але плутаю ролі таблиць або кроки налаштування FK.</td></tr>
@@ -117,67 +118,80 @@ select{max-width:100%}
 const $=s=>document.querySelector(s),E=(t,h,c)=>{const e=document.createElement(t);if(h!=null)e.innerHTML=h;if(c)e.className=c;return e};
 document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on',x===b));['th','tr','ts','ev'].forEach(i=>$('#'+i).classList.toggle('hide',i!==b.dataset.t));scrollTo(0,0)});
 const R=['1 : 1','1 : ∞','∞ : ∞'];
+const TS=[0,0,0],r2=x=>String(Math.round(x*100)/100).replace('.',',');
 /* ТРЕНАЖЕР 1 */
 const sc=[['Учень — Шкільний квиток',0],['Категорія меню — Страви',1],['Лікар — Пацієнти',2],['Клас — Учні',1],['Вчителі — Класи',2],['Країна — Столиця',0]];
 let done1=0,ok1=0;
 sc.forEach(([t,a],i)=>{const r=E('div',null,'row');r.append(E('span','<b>'+(i+1)+'.</b> '+t));
-R.forEach((x,j)=>{const b=E('button',x,'b');b.onclick=()=>{if(r.dataset.d)return;r.dataset.d=1;done1++;if(j===a){ok1++;b.classList.add('ok')}else{b.classList.add('bad');r.children[a+1].classList.add('ok')}
-$('#t1s').textContent=done1===sc.length?'Результат: '+ok1+' з '+sc.length+(ok1<sc.length?'. Повтори таблицю з теорії.':'. Чудово!'):''};r.append(b)});$('#t1').append(r)});
+R.forEach((x,j)=>{const b=E('button',x,'b');b.onclick=()=>{if(r.dataset.d)return;r.dataset.d=1;done1++;if(j===a){ok1++;TS[0]=ok1/10;b.classList.add('ok')}else{b.classList.add('bad');r.children[a+1].classList.add('ok')}
+$('#t1s').textContent=done1===sc.length?'Результат: '+ok1+' з '+sc.length+(ok1<sc.length?'. Повтори таблицю з теорії.':'. Чудово!')+' Бали: '+r2(TS[0])+' з 0,6.':'';evalUpd()};r.append(b)});$('#t1').append(r)});
 /* ТРЕНАЖЕР 2 */
 const M=['Бабл-ті Таро','Чізбургер','Картопля фрі','Лате'];
 const ord=[[101,2],[102,4],[103,7],[104,1],[105,5],[106,3]];let d2=0,ok2=0;
 ord.forEach(([i,f])=>{const valid=f>=1&&f<=4,r=E('div',null,'row');r.append(E('span','Замовлення №'+i+': МенюID = <b>'+f+'</b>'));
 const fb=E('span',null,'fb');
-[['Прийме ✓',true],['Відхилить ✗',false]].forEach(([t,v])=>{const bt=E('button',t,'b');bt.onclick=()=>{if(r.dataset.d)return;r.dataset.d=1;d2++;const good=v===valid;if(good)ok2++;bt.classList.add(good?'ok':'bad');
+[['Прийме ✓',true],['Відхилить ✗',false]].forEach(([t,v])=>{const bt=E('button',t,'b');bt.onclick=()=>{if(r.dataset.d)return;r.dataset.d=1;d2++;const good=v===valid;if(good){ok2++;TS[1]=ok2/10}bt.classList.add(good?'ok':'bad');
 fb.textContent=(good?'Вірно. ':'Ні. ')+(valid?'У «Меню» є ID '+f+' ('+M[f-1]+').':'У «Меню» немає ID '+f+' — це порушення цілісності.');
-$('#t2s').textContent=d2===ord.length?'Результат: '+ok2+' з '+ord.length+'.':''};r.append(bt)});r.append(fb);$('#t2').append(r)});
+$('#t2s').textContent=d2===ord.length?'Результат: '+ok2+' з '+ord.length+'. Бали: '+r2(TS[1])+' з 0,6.':'';evalUpd()};r.append(bt)});r.append(fb);$('#t2').append(r)});
 function chkFK(){const v=id=>$('#'+id).value,e=[];
 if(v('f_t')!=='1')e.push('Тип поля має збігатися з типом PK батьківської таблиці — «Ціле число».');
 if(!$('#f_fk').checked)e.push('Постав прапорець у колонці «Зовнішній ключ».');
 if(v('f_tb')!=='1')e.push('У колонці «Таблиця» обери батьківську таблицю — «Меню».');
 if(v('f_pf')!=='0')e.push('У колонці «Поле» обери первинний ключ батьківської таблиці — «ID».');
 if(!$('#f_sub').checked)e.push('Увімкни «Підстановку», щоб замість цифр був список назв.');
+if(!chkFK.t){chkFK.t=1;TS[2]=Math.round(0.16*(5-e.length)*100)/100;evalUpd()}
 const o=$('#f_out'),p=$('#f_prev');
-if(e.length){o.innerHTML='Потрібно виправити:<br>• '+e.join('<br>• ');p.innerHTML=''}
-else{o.textContent='Налаштовано правильно! Ось як тепер виглядатиме введення замовлення:';p.innerHTML='<div class="row"><span>МенюID:</span><select>'+M.map(m=>'<option>'+m+'</option>').join('')+'</select></div>'}}
+if(e.length){o.innerHTML='Потрібно виправити:<br>• '+e.join('<br>• ')+'<br>Бали за першу спробу: '+r2(TS[2])+' з 0,8.';p.innerHTML=''}
+else{o.textContent='Налаштовано правильно! Бали за першу спробу: '+r2(TS[2])+' з 0,8. Ось як тепер виглядатиме введення замовлення:';p.innerHTML='<div class="row"><span>МенюID:</span><select>'+M.map(m=>'<option>'+m+'</option>').join('')+'</select></div>'}}
 /* ТЕСТ */
 const sel=(n,opts)=>'<select data-k="'+n+'"><option value="">— обери —</option>'+opts.map((o,i)=>'<option value="'+i+'">'+o+'</option>').join('')+'</select>';
 const T=[];
 // 1
-T.push({max:1,t:'Одиночний вибір',lvl:'легко',h:'Яка таблиця у зв’язку 1 : ∞ є <b>дочірньою</b>?',
+T.push({max:0.5,t:'Одиночний вибір',lvl:'легко',h:'Яка таблиця у зв’язку 1 : ∞ є <b>дочірньою</b>?',
 b:['Та, що з боку «1»','Та, що з боку «∞» і містить зовнішній ключ','Та, у якої немає первинного ключа','Будь-яка з двох'].map((o,i)=>'<label class="opt"><input type="radio" name="q1" value="'+i+'">'+o+'</label>').join(''),
-g(){const v=document.querySelector('[name=q1]:checked');return{s:v&&v.value==1?1:0,m:null}},ex:'Правильно: друга відповідь.'});
+g(){const v=document.querySelector('[name=q1]:checked');return{s:v&&v.value==1?0.5:0,m:null}},ex:'Правильно: друга відповідь.'});
 // 2
 const tf=[['FK у дочірній таблиці посилається на первинний ключ батьківської.',1],['У FK можна записати значення, якого немає в PK батьківської таблиці.',0],['У dat.A спочатку створюють дочірні таблиці, а потім довідники.',0],['Підстановка показує під час введення список зрозумілих назв замість цифр.',1]];
 T.push({max:1,t:'Правда / неправда (по 0,25 б)',lvl:'легко',h:'Познач кожне твердження.',
 b:tf.map((x,i)=>'<div class="row"><span>'+x[0]+'</span><select data-k="tf'+i+'"><option value="">—</option><option value="1">Правда</option><option value="0">Неправда</option></select></div>').join(''),
 g(){let s=0;tf.forEach((x,i)=>{if(document.querySelector('[data-k=tf'+i+']').value===String(x[1]))s+=.25});return{s}},ex:'Правильно: П, Н, Н, П.'});
 // 3
-const mt=[['Працівник — Медична книжка',0],['Позиція меню — Замовлення',1],['Клієнти — Страви меню',2]];
-T.push({max:1.5,t:'Відповідність (по 0,5 б)',lvl:'середньо',h:'Добери вид зв’язку до кожної пари таблиць.',
+const mt=[['Працівник — Медична книжка',0],['Позиція меню — Замовлення',1],['Категорія меню — Страви',1],['Клієнти — Страви меню',2]];
+T.push({max:1,t:'Відповідність (по 0,25 б)',lvl:'середньо',h:'Добери вид зв’язку до кожної пари таблиць.',
 b:mt.map((x,i)=>'<div class="row"><span>'+x[0]+'</span>'+sel('mt'+i,R)+'</div>').join(''),
-g(){let s=0;mt.forEach((x,i)=>{if(document.querySelector('[data-k=mt'+i+']').value===String(x[1]))s+=.5});return{s}},ex:'Правильно: 1:1, 1:∞, ∞:∞.'});
+g(){let s=0;mt.forEach((x,i)=>{if(document.querySelector('[data-k=mt'+i+']').value===String(x[1]))s+=.25});return{s}},ex:'Правильно: 1:1, 1:∞, 1:∞, ∞:∞.'});
 // 4
 const st=['Вмикаємо прапорець «Підстановка»','Ставимо прапорець у колонці «Зовнішній ключ»','Додаємо поле для зв’язку (Ціле число)','У колонці «Поле» обираємо первинний ключ (ID)','У колонці «Таблиця» обираємо батьківську таблицю'];
 const ans=[4,2,1,3,0].map(x=>x);// правильна позиція кроку: index→номер
 const pos=[5,2,1,4,3]; // крок i має бути на місці pos[i]
-T.push({max:1.5,t:'Послідовність (по 0,3 б)',lvl:'середньо',h:'Вкажи правильний порядок налаштування FK у конструкторі таблиці (1–5).',
+T.push({max:1,t:'Послідовність (по 0,2 б)',lvl:'середньо',h:'Вкажи правильний порядок налаштування FK у конструкторі таблиці (1–5).',
 b:st.map((x,i)=>'<div class="row"><span>'+x+'</span>'+sel('st'+i,['1','2','3','4','5'])+'</div>').join(''),
-g(){let s=0;st.forEach((x,i)=>{if(document.querySelector('[data-k=st'+i+']').value===String(pos[i]-1))s+=.3});return{s}},ex:'Правильний порядок: поле → FK → таблиця → поле (ID) → підстановка.'});
+g(){let s=0;st.forEach((x,i)=>{if(document.querySelector('[data-k=st'+i+']').value===String(pos[i]-1))s+=.2});return{s}},ex:'Правильний порядок: поле → FK → таблиця → поле (ID) → підстановка.'});
 // 5
 const mc=[['Червоні стрілки — системні зв’язки, створені через FOREIGN KEY.',1],['Блакитні стрілки — користувацькі, їх можна видалити подвійним кліком.',1],['Відкривається через Запит → «Подання зв’язків» (іконка пазла).',1],['Біля стрілок на схемі dat.A підписані значки 1 та ∞.',0]];
 T.push({max:1,t:'Множинний вибір (по 0,25 б)',lvl:'середньо',h:'Познач <b>усі правильні</b> твердження про ER-діаграму dat.A.',
 b:mc.map((x,i)=>'<label class="opt"><input type="checkbox" data-k="mc'+i+'">'+x[0]+'</label>').join(''),
 g(){let s=0;mc.forEach((x,i)=>{if(document.querySelector('[data-k=mc'+i+']').checked===!!x[1])s+=.25});return{s}},ex:'Правильні перші три; значки 1 та ∞ у dat.A не підписуються.'});
 // 6
-T.push({max:2,t:'Ситуаційна задача (по 0,5 б)',lvl:'складно',h:'Кав’ярня додає облік клієнтів. Є дві таблиці:<div class="sc"><table><tr><th colspan="2">Клієнти</th><th colspan="3">Замовлення</th></tr><tr><td>ID (PK)</td><td>Ім’я</td><td>ID (PK)</td><td>КлієнтID</td><td>Дата</td></tr></table></div>Один клієнт може зробити багато замовлень, а кожне замовлення належить одному клієнту.',
-b:'<div class="row"><span>Вид зв’язку</span>'+sel('c0',R)+'</div><div class="row"><span>Батьківська таблиця</span>'+sel('c1',['Клієнти','Замовлення'])+'</div><div class="row"><span>Поле-зовнішній ключ</span>'+sel('c2',['Клієнти.ID','Клієнти.Ім’я','Замовлення.ID','Замовлення.КлієнтID'])+'</div><div class="row"><span>Яку таблицю створюємо першою?</span>'+sel('c3',['Клієнти','Замовлення'])+'</div>',
-g(){const a=[1,0,3,0];let s=0;a.forEach((x,i)=>{if(document.querySelector('[data-k=c'+i+']').value===String(x))s+=.5});return{s}},ex:'Правильно: 1:∞; батьківська — Клієнти; FK — Замовлення.КлієнтID; першою — Клієнти.'});
-T.forEach((q,i)=>{const c=E('div',null,'card');c.innerHTML='<span class="pts">'+q.max+' б · '+q.lvl+'</span><h2>Завдання '+(i+1)+'. '+q.t+'</h2><p>'+q.h+'</p>'+q.b+'<p class="fb" id="fb'+i+'"></p>';q.c=c;$('#tests').append(c)});
+T.push({max:1.5,t:'Ситуаційна задача (по 0,5 б)',lvl:'складно',h:'Кав’ярня додає облік клієнтів. Є дві таблиці:<div class="sc"><table><tr><th colspan="2">Клієнти</th><th colspan="3">Замовлення</th></tr><tr><td>ID (PK)</td><td>Ім’я</td><td>ID (PK)</td><td>КлієнтID</td><td>Дата</td></tr></table></div>Один клієнт може зробити багато замовлень, а кожне замовлення належить одному клієнту.',
+b:'<div class="row"><span>Вид зв’язку</span>'+sel('c0',R)+'</div><div class="row"><span>Поле-зовнішній ключ</span>'+sel('c1',['Клієнти.ID','Клієнти.Ім’я','Замовлення.ID','Замовлення.КлієнтID'])+'</div><div class="row"><span>Яку таблицю створюємо першою?</span>'+sel('c2',['Клієнти','Замовлення'])+'</div>',
+g(){const a=[1,3,0];let s=0;a.forEach((x,i)=>{if(document.querySelector('[data-k=c'+i+']').value===String(x))s+=.5});return{s}},ex:'Правильно: 1:∞; FK — Замовлення.КлієнтID; першою створюємо батьківську таблицю — Клієнти.'});
+T.forEach((q,i)=>{const c=E('div',null,'card');c.innerHTML='<span class="pts">'+r2(q.max)+' б · '+q.lvl+'</span><h2>Завдання '+(i+1)+'. '+q.t+'</h2><p>'+q.h+'</p>'+q.b+'<p class="fb" id="fb'+i+'"></p>';q.c=c;$('#tests').append(c)});
 const SC=[];
-function evalUpd(tot){let h='<tr><th>Завдання</th><th>Тип</th><th>Бали</th></tr>';T.forEach((q,i)=>{h+='<tr><td>'+(i+1)+'</td><td>'+q.t.replace(/ \(.*\)/,'')+'</td><td>'+SC[i]+' з '+q.max+'</td></tr>'});h+='<tr><th colspan="2">Разом</th><th>'+tot+' з 8</th></tr>';$('#evt').innerHTML=h;$('#evn').textContent=($('#nm').value?$('#nm').value+', ':'')+'ось твій результат:';$('#evr').textContent='Рівень: '+(tot<=2?'початковий':tot<=4?'середній':tot<=6?'достатній':'високий')}
+function evalUpd(){const tn=['Вправа 1. Види зв’язків','Вправа 2. Цілісність FK','Вправа 3. Налаштування FK'],tm=[0.6,0.6,0.8];
+let h='<tr><th>Частина</th><th>Завдання</th><th>Бали</th></tr>',a=0,b=0;const g=SC.length>0;
+tn.forEach((n,i)=>{a+=TS[i];h+='<tr><td>Тренажер</td><td>'+n+'</td><td>'+r2(TS[i])+' з '+r2(tm[i])+'</td></tr>'});
+h+='<tr><th colspan="2">Тренажер разом</th><th>'+r2(a)+' з 2</th></tr>';
+T.forEach((q,i)=>{if(g)b+=SC[i];h+='<tr><td>Тест</td><td>'+(i+1)+'. '+q.t.replace(/ \(.*\)/,'')+'</td><td>'+(g?r2(SC[i]):'—')+' з '+r2(q.max)+'</td></tr>'});
+h+='<tr><th colspan="2">Тест разом</th><th>'+(g?r2(b):'—')+' з 6</th></tr>';
+const tot=Math.round((a+b)*100)/100;
+h+='<tr><th colspan="2">Усього за частину</th><th>'+r2(tot)+' з 8</th></tr>';
+$('#evt').innerHTML=h;
+$('#evn').textContent=($('#nm').value?$('#nm').value+', ':'')+'ось твої бали (тренажер оновлюється одразу, тест — після перевірки).';
+$('#evr').textContent=g?'Разом '+r2(tot)+' з 8. Рівень: '+(tot<=2?'початковий':tot<=4?'середній':tot<=6?'достатній':'високий'):'Пройди тест, щоб побачити підсумок.'}
 document.querySelectorAll('.sf').forEach(c=>c.onchange=()=>{const n=document.querySelectorAll('.sf:checked').length;$('#sfr').textContent=n===4?'Чудово! Ти готовий(-а) до практичного завдання.':n+' з 4. Повтори розділи теорії для тих пунктів, які не відмічено.'});
 function grade(){let tot=0,parts=[];T.forEach((q,i)=>{const s=Math.round(q.g().s*100)/100;tot+=s;parts.push(i+1+': '+s+'/'+q.max);SC[i]=s;
-const f=$('#fb'+i);f.className='fb';f.textContent=(s===q.max?'✓ ':'')+'Бали: '+s+' з '+q.max+'. '+(s<q.max?q.ex:'');q.c.classList.toggle('ok',s===q.max);q.c.classList.toggle('bad',s<q.max)});
-tot=Math.round(tot*100)/100;$('#res').textContent=($('#nm').value?$('#nm').value+': ':'')+'Разом '+tot+' з 8 балів';$('#det').textContent='По завданнях — '+parts.join(' · ')+'. Ще буде практичне завдання у dat.A.';evalUpd(tot);$('#res').scrollIntoView({behavior:'smooth',block:'center'})}
+const f=$('#fb'+i);f.className='fb';f.textContent=(s===q.max?'✓ ':'')+'Бали: '+r2(s)+' з '+r2(q.max)+'. '+(s<q.max?q.ex:'');q.c.classList.toggle('ok',s===q.max);q.c.classList.toggle('bad',s<q.max)});
+tot=Math.round(tot*100)/100;$('#res').textContent=($('#nm').value?$('#nm').value+': ':'')+'Тест: '+r2(tot)+' з 6 балів';$('#det').textContent='По завданнях — '+parts.join(' · ')+'. Підсумок разом із тренажером — у розділі «Оцінка».';evalUpd();$('#res').scrollIntoView({behavior:'smooth',block:'center'})}
+evalUpd();
 </script></body></html>
